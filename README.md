@@ -26,11 +26,11 @@ noSecretPart3:
 This should be copied into the terminal window as well.
 It should install and activate bitDefender on the device
 
-nosecretPart 4:
+nosecretPart4:
 This should be copied into the Terminal window.
 It should remove/disable guest user
 
-n0SecretPart5:
+noSecretPart5:
 This should be copied into the terminal window.
 This should turn on automatic updates but needs to INSTALL to do it
 This installs security updates automatically
