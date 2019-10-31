@@ -6,10 +6,10 @@ noSecretCode:
 this is theroettically a bash script that when called using the following terminal lines:
 
 Give execute permission to your script:
-chmod +x /path/to/yourscript.sh
+chmod +x /home/user/Desktop/yourscript.sh
 
 And to run your script:
-/path/to/yourscript.sh
+/home/user/Desktop/yourscript.sh
 
 Since . refers to the current directory: if yourscript.sh is in the current directory, you can simplify this to:
 ./yourscript.sh
