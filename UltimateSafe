@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# egrep '(Permit(.*?)(Passwords|Environment))' /etc/ssh/sshd_config
+egrep '(Permit(.*?)(Passwords|Environment))' /etc/ssh/sshd_config
 
-#grep -i protocol /etc/ssh/sshd_config
+grep -i protocol /etc/ssh/sshd_config
 
 echo "Does protocol 1 exist? (y/n)"
 read answer 
@@ -15,47 +15,47 @@ if [[ $answer == "n" ]]; then
 echo "good but make sure protocol 2 is there"
 fi
 
-# sudo apt list telnetd
+sudo apt list telnetd
 
 echo "is installed? (y/n)"
 read answe
 
 if [[ $answe == "y" ]]; then
-# sudo apt-get remove telnetd
+sudo apt-get remove telnetd
 fi
 
-# sudo apt list nis
+sudo apt list nis
 echo "is installed? (y/n)"
 read answ
 
 if [[ $answ == "y" ]]; then
-# sudo apt-get remove nis
+sudo apt-get remove nis
 fi
 
 echo "Is the Trivial File Transfer Protocol necessary"
 read ans
 
 if [[ $ans == "n" ]]; then
-# dpkg -l | grep tftpd-hpa
+dpkg -l | grep tftpd-hpa
 ii tftpd-hpa 5.2+20150808-1Ubuntu1.16.04.1
 
 echo "is installed? (y/n)"
 read an
 
 if [[ $an == "y" ]]; then
-# sudo apt-get remove tftpd-hpa
+sudo apt-get remove tftpd-hpa
 fi
 fi
 
-# sudo apt list rsh-server
+sudo apt list rsh-server
 echo "is installed? (y/n)"
 read a
 
 if [[ $a == "y" ]]; then
-# sudo apt-get remove rsh-server
+sudo apt-get remove rsh-server
 fi
 
-# sudo grep -i automaticloginenable /etc/gdm3/custom.conf
+sudo grep -i automaticloginenable /etc/gdm3/custom.conf
 
 echo "is false? (y/n)"
 read answet
@@ -64,7 +64,7 @@ if [[ $answet == "y" ]]; then
 echo "chnage to false then"
 fi
 
-# sudo find / -name '*.shosts'
+sudo find / -name '*.shosts'
 echo "do shosts files exist (y/n)"
 read ted
 
@@ -72,11 +72,11 @@ if [[ $ted == "y" ]]; then
 echo "use # rm /[path]/[to]/[file]/.shosts to delete them"
 fi
 
-# grep pam_unix.so /etc/pam.d/* | grep nullok
+grep pam_unix.so /etc/pam.d/* | grep nullok
 echo "people can log in without passwords"
 echo "please Remove any instances of the "nullok" option in files under /etc/pam.d/"
 
-# grep logout /etc/dconf/db/local.d/*
+grep logout /etc/dconf/db/local.d/*
 echo "is the "logout" key is bound to an action, is commented out, or is missing (y/n)"
 read fred
 
@@ -100,13 +100,13 @@ echo " is File Transfer Protocol (FTP) needed (y/n)"
 read omir
 
 if [[ $omir == "y" ]]; then 
-# dpkg -l | grep vsftpd
+dpkg -l | grep vsftpd
 ii vsftpd 3.0.3-3Ubuntu2
 echo "does it exist? (y/n)"
 read lilly
 
 if [[ $lilly == "y" ]]; then
-# sudo apt-get remove vsftpd
+sudo apt-get remove vsftpd
 fi
 fi
 
@@ -114,14 +114,14 @@ echo "install SSH (y/n)"
 read Beau
 
 if [[ $Beau == "y" ]]; then
-# sudo apt install ssh
+sudo apt install ssh
 fi
 
 echo "install SSHD (y/n)"
 read kate
 
 if [[ $kate == "y" ]]; then
-# sudo systemctl enable sshd.service
+sudo systemctl enable sshd.service
 fi
 
 # grep -i 1 /proc/sys/crypto/fips_enabled
@@ -133,16 +133,19 @@ echo "Configure the system to run in FIPS mode. Add "fips=1" to the kernel param
 fi
 
 echo "checking for shosts.equiv files"
-# find / -name shosts.equiv
+find / -name shosts.equiv
 
 echo "was a file returned (y/n)"
 read john 
 
 if [[ $john == "y" ]]; then
-# rm /etc/ssh/shosts.equiv
+rm /etc/ssh/shosts.equiv
 fi
 
-echo "disabling the x86 Ctrl-Alt-Delete key sequence."
-# sudo systemctl mask ctrl-alt-del.target
-# sudo systemctl daemon-reload
+echo "disabling the x86 Ctrl-Alt-Delete key sequence. (y to confirm)"
+read jeff
+if [[ $jeff == "y" ]]; then
+sudo systemctl mask ctrl-alt-del.target
+sudo systemctl daemon-reload
+fi
 
