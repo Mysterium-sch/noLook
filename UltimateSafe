@@ -1,5 +1,23 @@
 #!/bin/bash
 
+#https://www.networkworld.com/article/2726217/how-to-enforce-password-complexity-on-linux.html
+
+sudo apt-get install systemd
+
+echo "install SSH (y/n)"
+read Beau
+
+if [[ $Beau == "y" ]]; then
+sudo apt install ssh
+fi
+
+echo "install SSHD (y/n)"
+read kate
+
+if [[ $kate == "y" ]]; then
+sudo systemctl enable sshd.service
+fi
+
 egrep '(Permit(.*?)(Passwords|Environment))' /etc/ssh/sshd_config
 
 grep -i protocol /etc/ssh/sshd_config
@@ -17,7 +35,7 @@ fi
 
 sudo apt list telnetd
 
-echo "is installed? (y/n)"
+echo "is telnet installed? (y/n)"
 read answe
 
 if [[ $answe == "y" ]]; then
@@ -25,7 +43,7 @@ sudo apt-get remove telnetd
 fi
 
 sudo apt list nis
-echo "is installed? (y/n)"
+echo "is nis installed? (y/n)"
 read answ
 
 if [[ $answ == "y" ]]; then
@@ -37,9 +55,8 @@ read ans
 
 if [[ $ans == "n" ]]; then
 dpkg -l | grep tftpd-hpa
-ii tftpd-hpa 5.2+20150808-1Ubuntu1.16.04.1
 
-echo "is installed? (y/n)"
+echo "is tftpd-hpa installed? (y/n)"
 read an
 
 if [[ $an == "y" ]]; then
@@ -48,7 +65,7 @@ fi
 fi
 
 sudo apt list rsh-server
-echo "is installed? (y/n)"
+echo "is rsh-server installed? (y/n)"
 read a
 
 if [[ $a == "y" ]]; then
@@ -60,40 +77,38 @@ sudo grep -i automaticloginenable /etc/gdm3/custom.conf
 echo "is false? (y/n)"
 read answet
 
-if [[ $answet == "y" ]]; then 
-echo "chnage to false then"
+if [[ $answet == "n" ]]; then 
+echo "change to false then"
 fi
 
-sudo find / -name '*.shosts'
-echo "do shosts files exist (y/n)"
-read ted
+env | grep XDG_CURRENT_DESKTOP
+echo "Is using gnome"
+read help
 
-if [[ $ted == "y" ]]; then
-echo "use # rm /[path]/[to]/[file]/.shosts to delete them"
-fi
-
+if [[ $help == "y" ]]; then
 grep pam_unix.so /etc/pam.d/* | grep nullok
-echo "people can log in without passwords"
+echo " "
+echo "People can log in without passwords"
 echo "please Remove any instances of the "nullok" option in files under /etc/pam.d/"
+echo " "
 
 grep logout /etc/dconf/db/local.d/*
-echo "is the "logout" key is bound to an action, is commented out, or is missing (y/n)"
+echo "is the logout key is bound to an action, is commented out, or is missing (y/n)"
 read fred
 
 if [[ $fred == "y" ]]; then
 echo "Add the setting to disable the Ctrl-Alt-Delete sequence for GNOME:
-
 [org/gnome/settings-daemon/plugins/media-keys]
 logout=
-
 then update using # dconf update"
+fi
 fi
 
 echo "disable the root account? (y/n)"
 read joestar
 
 if [[ $joestar == "y" ]]; then
-$ sudo passwd -l root
+ sudo passwd -l root
 fi
 
 echo " is File Transfer Protocol (FTP) needed (y/n)"
@@ -101,8 +116,7 @@ read omir
 
 if [[ $omir == "y" ]]; then 
 dpkg -l | grep vsftpd
-ii vsftpd 3.0.3-3Ubuntu2
-echo "does it exist? (y/n)"
+echo "does vsftpd exist? (y/n)"
 read lilly
 
 if [[ $lilly == "y" ]]; then
@@ -110,21 +124,8 @@ sudo apt-get remove vsftpd
 fi
 fi
 
-echo "install SSH (y/n)"
-read Beau
 
-if [[ $Beau == "y" ]]; then
-sudo apt install ssh
-fi
-
-echo "install SSHD (y/n)"
-read kate
-
-if [[ $kate == "y" ]]; then
-sudo systemctl enable sshd.service
-fi
-
-# grep -i 1 /proc/sys/crypto/fips_enabled
+grep -i 1 /proc/sys/crypto/fips_enabled
 echo "was 1 returned (y/n)"
 read IDK
 
@@ -138,8 +139,32 @@ find / -name shosts.equiv
 echo "was a file returned (y/n)"
 read john 
 
+for f in /home/*/*/*;
+do
+echo $f
+
+if [[ $f = *shosts* ]]; then
+echo "FOUND ONE!!!!"
+fi
+
+if [[ $f = *equiv* ]]; then
+echo "FOUND ONE!!!!"
+fi
+
+done
+
+
+echo "do shosts files exist (y/n)"
+read ted
+
+if [[ $ted == "y" ]]; then
+echo "use # rm /[path]/[to]/[file]/.shosts to delete them"
+fi
+
+echo "do equiv files exist (y/n)"
+read john
 if [[ $john == "y" ]]; then
-rm /etc/ssh/shosts.equiv
+echo "use # rm /[path]/[to]/[file]/.shosts to delete them"
 fi
 
 echo "disabling the x86 Ctrl-Alt-Delete key sequence. (y to confirm)"
@@ -149,3 +174,4 @@ sudo systemctl mask ctrl-alt-del.target
 sudo systemctl daemon-reload
 fi
 
+echo "done"
