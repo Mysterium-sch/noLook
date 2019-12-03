@@ -34,3 +34,7 @@ noSecretPart5:
 This should be copied into the terminal window.
 This should turn on automatic updates but needs to INSTALL to do it
 This installs security updates automatically
+
+UltimateSafe:
+does a bunch of saftey checks for the computer 
+Goes through the "high" STIG Viewer
