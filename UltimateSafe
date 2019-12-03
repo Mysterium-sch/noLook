@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#https://www.networkworld.com/article/2726217/how-to-enforce-password-complexity-on-linux.html
-
 sudo apt-get install systemd
 
 echo "install SSH (y/n)"
@@ -174,4 +172,16 @@ sudo systemctl mask ctrl-alt-del.target
 sudo systemctl daemon-reload
 fi
 
+echo "Upgrade/update everything?"
+read up
+
+if [[ $up = "y" ]]; then
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade
+fi
+
 echo "done"
+echo " "
+echo "follow this link to enforce secure passwaords: "
+echo "https://www.networkworld.com/article/2726217/how-to-enforce-password-complexity-on-linux.html"
