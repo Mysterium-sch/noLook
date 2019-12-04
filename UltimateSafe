@@ -13,7 +13,7 @@ echo "install SSHD (y/n)"
 read kate
 
 if [[ $kate == "y" ]]; then
-sudo systemctl enable sshd.service
+sudo systemctl enable ssh.service
 fi
 
 egrep '(Permit(.*?)(Passwords|Environment))' /etc/ssh/sshd_config
@@ -48,6 +48,163 @@ if [[ $answ == "y" ]]; then
 sudo apt-get remove nis
 fi
 
+echo "is there any unnecessary programs? (y/n)"
+read any
+
+if [[ $any = "y" ]]; then
+echo "insert the name"
+read pro
+sudo apt-get remove $pro
+fi
+
+
+echo "Is the Trivial File Transfer Protocol necessary"
+read ans
+
+if [[ $ans == "n" ]]; then
+dpkg -l | grep tftpd-hpa
+
+echo "is tftpd-hpa installed? (y/n)"
+read an
+
+if [[ $an == "y" ]]; then
+sudo apt-get remove tftpd-hpa
+fi
+fi
+
+sudo apt list rsh-server
+echo "is rsh-server installed? (y/n)"
+read a
+
+if [[ $a == "y" ]]; then
+sudo apt-get remove rsh-server
+fi
+
+sudo grep -i automaticloginenable /etc/gdm3/custom.conf
+
+echo "is false? (y/n)"
+read answet
+
+if [[ $answet == "n" ]]; then 
+echo "change to false then"
+fi
+
+env | grep XDG_CURRENT_DESKTOP
+echo "Is using gnome"
+read help
+
+if [[ $help == "y" ]]; then
+grep pam_unix.so /etc/pam.d/* | grep nullok
+echo " "
+echo "People can log in without passwords"
+echo "please Remove any instances of the "nullok" option in files under /etc/pam.d/"
+echo " "
+
+grep logout /etc/dconf/db/local.d/*
+echo "is the logout key is bound to an action, is commented out, or is missing (y/n)"
+read fred
+
+if [[ $fred == "y" ]]; then
+echo "Add the setting to disable the Ctrl-Alt-Delete sequence for GNOME:
+[org/gnome/settings-daemon/plugins/media-keys]
+logout=
+then update using # dconf update"
+fi
+fi
+
+echo "disable the root account? (y/n)"
+read joestar
+
+if [[ $joestar == "y" ]]; then
+ sudo passwd -l root
+fi
+
+echo " is File Transfer Protocol (FTP) needed (y/n)"
+read omir
+
+if [[ $omir == "y" ]]; then 
+dpkg -l | grep vsftpd
+echo "does vsftpd exist? (y/n)"
+read lilly
+
+if [[ $lilly == "y" ]]; then
+sudo apt-get remove vsftpd
+fi
+fi
+
+
+grep -i 1 /proc/sys/crypto/fips_enabled
+echo "was 1 returned (y/n)"
+read IDK
+
+if [[ $IDK == "n" ]]; then 
+echo "Configure the system to run in FIPS mode. Add "fips=1" to the kernel parameter during the Ubuntu operating systems install"
+fi
+
+echo "checking for shosts.equiv files"
+find / -name shosts.equiv
+
+echo "was a file returned (y/n)"
+read john 
+
+for f in /home/*/*/*;
+do
+echo $f
+
+if [[ $f = *shosts* ]]; then
+echo "FOUND ONE!!!!"
+fi
+
+if [[ $f = *equiv* ]]; then
+echo "FOUND ONE!!!!"
+fi
+
+done
+
+
+echo "do shosts files exist (y/n)"
+read ted
+
+if [[ $ted == "y" ]]; then
+echo "use # rm /[path]/[to]/[file]/.shosts to delete them"
+fi
+
+echo "do equiv files exist (y/n)"
+read john
+if [[ $john == "y" ]]; then
+echo "use # rm /[path]/[to]/[file]/.shosts to delete them"
+fi
+
+echo "disabling the x86 Ctrl-Alt-Delete key sequence. (y to confirm)"
+read jeff
+if [[ $jeff == "y" ]]; then
+sudo systemctl mask ctrl-alt-del.target
+sudo systemctl daemon-reload
+fi
+
+echo "Upgrade/update everything?"
+read up
+
+if [[ $up = "y" ]]; then
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade
+fi
+
+echo "Would you like to run the 'code' script, it will look for dangerous files through predetermined search? (y/n)"
+read code
+
+if [[ $code = "y" ]]; then
+echo "what is the current user?"
+read user
+chmod +x /home/$user/Desktop/code.sh
+/home/$user/Desktop/code.sh
+fi
+
+echo "done"
+echo " "
+echo "follow this link to enforce secure passwaords: "
+echo "https://www.networkworld.com/article/2726217/how-to-enforce-password-complexity-on-linux.html"
 echo "Is the Trivial File Transfer Protocol necessary"
 read ans
 
